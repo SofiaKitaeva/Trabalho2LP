@@ -14,12 +14,12 @@ void* InsereCont(size_t x){
     contador* novo = (contador*) malloc(sizeof(contador));
     novo->endereco=malloc(x);
     novo->referencias=1;
-    novo->prox==NULL;
+    novo->prox=NULL;
     if(lista==NULL)
         lista=novo;
     else{
         contador* aux = lista;
-        while(aux!=NULL)
+        while(aux->prox!=NULL)
             aux=aux->prox;
         aux->prox=novo;
     }
@@ -55,18 +55,30 @@ void atualiza(void* x, int y){
 }
 
 void* malloc2(size_t tam){
-    
+	
     void* x = InsereCont(tam);
 	
     return x;
 }
 
 void atrib2(int *x, int *y){
-    if(x!=NULL){
+	if(x!=NULL){
       atualiza(x,-1);
       if(y!=NULL)
           atualiza(y,1);
     }
     
-    *x=*y;
+    if(y==NULL)
+    	x=NULL;
+    else
+    	*x=*y;
+}
+
+void dump(){
+  printf("\n\n Situação da memória\n");
+  contador* aux=lista;
+  while(aux!=NULL) {
+      printf("Local na memória: %p  Contador: %d\n",aux->endereco, aux->referencias);
+      aux=aux->prox;
+  }
 }
