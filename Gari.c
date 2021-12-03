@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "Gari.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
 typedef struct Contador{
     void* endereco;
     int referencias;
@@ -27,27 +30,27 @@ void* InsereCont(size_t x){
 
 }
 
-Contador *liberamem(Contador* h, Contador *aux, Contador *prim){
-  if(prim->ct == 0){
+contador *liberamem(contador* h, contador *aux, contador *prim){
+  if(prim->referencias == 0){
     free(h);
 		return aux;
   }
-	else if(aux->ct == 0){
+	else if(aux->referencias == 0){
 		h->prox = aux->prox;
     free(aux);
 		return h;
 	}
 	else
-		return Ct0(h->prox,aux->prox,prim);
+		return liberamem(h->prox,aux->prox,prim);
 }
 
-void atualiza(void *x, int y){
-  Contador*aux = lista;
+void atualiza(void* x, int y){
+  contador*aux = lista;
   while (aux!=NULL){
       if(aux->endereco == x){
           aux->referencias += y;
       if(aux->referencias==0)
-        lista = liberamem(lista,lista->prox,lita);
+        lista = liberamem(lista,lista->prox,lista);
       break;}
     aux = aux->prox;
   }
@@ -60,11 +63,11 @@ void* malloc2(size_t tam){
     return x;
 }
 
-void atrib2(int **x, int *y){
-    if(*a!=NULL){
-      atualiza(*x,-1);
-      if(b!=NULL)
+void atrib2(int *x, int *y){
+    if(x!=NULL){
+      atualiza(x,-1);
+      if(y!=NULL)
           atualiza(y,1);
     }
-    *a=b;
+    *x=*y;
 }
