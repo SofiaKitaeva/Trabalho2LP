@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 #include "Gari.h"
 
 typedef struct Contador{
@@ -75,10 +76,12 @@ void atrib2(int *x, int *y){
 }
 
 void dump(){
-  printf("\n\n Situação da memória\n");
+setlocale (LC_ALL, "");
+  printf("\n\tSituação da memória\n");
   contador* aux=lista;
   while(aux!=NULL) {
       printf("Local na memória: %p  Contador: %d\n",aux->endereco, aux->referencias);
       aux=aux->prox;
   }
+  printf("\n");
 }
