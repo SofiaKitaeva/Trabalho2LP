@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "Gari.h"
 
 typedef struct Contador{
     void* endereco;
@@ -26,13 +27,27 @@ void* InsereCont(size_t x){
 
 }
 
-void atualiza(void *locala, int x){
+Contador *liberamem(Contador* h, Contador *aux, Contador *prim){
+  if(prim->ct == 0){
+    free(h);
+		return aux;
+  }
+	else if(aux->ct == 0){
+		h->prox = aux->prox;
+    free(aux);
+		return h;
+	}
+	else
+		return Ct0(h->prox,aux->prox,prim);
+}
+
+void atualiza(void *x, int y){
   Contador*aux = lista;
   while (aux!=NULL){
-      if(aux->endereco == locala){
-          aux->referencias = aux->ct+x;
-      if(aux->ct==0)
-        lista = Ct0(heap,heap->prox,heap);
+      if(aux->endereco == x){
+          aux->referencias += y;
+      if(aux->referencias==0)
+        lista = liberamem(lista,lista->prox,lita);
       break;}
     aux = aux->prox;
   }
