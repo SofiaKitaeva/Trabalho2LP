@@ -28,18 +28,22 @@ void* InsereCont(size_t x){
 	return novo->endereco;
 }
 
-contador *liberamem(contador* l, contador* aux, contador* prim){
-  if(prim->referencias == 0){
+contador *liberamem(contador* l, contador* aux){
+	if(l->referencias == 0){
     	free(l);
 		return aux;
-  }
-	else if(aux->referencias == 0){
-		l->prox = aux->prox;
-    	free(aux);
-		return l;
 	}
-	else
-		return liberamem(l->prox,aux->prox,prim);
+	else{
+		while(aux!=NULL){
+			if(aux->referencias == 0){
+				l->prox = aux->prox;
+    			free(aux);
+				return l;
+			}
+			l=l->prox;
+			aux=aux->prox;
+		}
+	}
 }
 
 void atualiza(void* x, int y){
@@ -48,7 +52,7 @@ void atualiza(void* x, int y){
     	if(aux->endereco == x){
         	aux->referencias += y;
       		if(aux->referencias==0)
-        		lista = liberamem(lista,lista->prox,lista);
+        		lista = liberamem(lista,lista->prox);
       		break;
 		}
     	aux = aux->prox;
